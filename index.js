@@ -1,6 +1,12 @@
 "use strict";
 
+
 class RangeValidator {
+    /**
+     *
+     * @param {number} from
+     * @param {number} to
+     */
     constructor(from, to) {
         this.from = from;
         this.to = to;
@@ -31,13 +37,35 @@ class RangeValidator {
         return this._to;
     }
 
+    /**
+     *
+     * @returns {string}
+     */
     get range() {
         return `${this.from} - ${this.to}`;
     }
 
+    /**
+     *
+     * @param {object} obj
+     * @returns {boolean}
+     */
+    static isRangeValidator(obj) {
+        return obj instanceof RangeValidator;
+    }
+
+    /**
+     *
+     * @param {number} v
+     * @param {object} obj
+     * @returns {boolean}
+     */
     static isValidate(v, obj) {
         if (typeof v !== 'number') {
             throw new TypeError('param from must be a number');
+        }
+        if (!RangeValidator.isRangeValidator(obj)) {
+            throw new TypeError('param obj must be an object created using the constructor function RangeValidator');
         }
         return v < obj.to || v > obj.from;
 
@@ -47,3 +75,5 @@ class RangeValidator {
 const objRange = new RangeValidator(12, 50);
 console.log(objRange.range);
 console.log(RangeValidator.isValidate(17, objRange));
+const objR = new Object(1,17);
+console.log(RangeValidator.isValidate(12,objR))
